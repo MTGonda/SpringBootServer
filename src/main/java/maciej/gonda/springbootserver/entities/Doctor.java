@@ -1,2 +1,4 @@
-package maciej.gonda.springbootserver.entities;public class Doctor {
+package maciej.gonda.springbootserver.entities;
+
+public class Doctor {
 }
