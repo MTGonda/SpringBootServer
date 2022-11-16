@@ -1,42 +1,35 @@
-package maciej.gonda.springbootserver.entities;
+package maciej.gonda.springbootserver.DTO;
 
-import jakarta.persistence.*;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import maciej.gonda.springbootserver.entities.*;
 
 import java.sql.Date;
 import java.util.Collection;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient {
-
-    @Id
-    private Long id;
+public class PatientDTO {
     private String imie;
     private String nazwisko;
     private int numertelefonu;
     private int Pesel;
     private Date dataurodzenia;
 
-    @ManyToOne(optional = true)
+
     private Doctor doctor;
 
-    @OneToOne(optional = false)
     private User user;
 
-    @OneToMany(mappedBy = "patient")
     private Collection<Visit> visits;
 
-    @ManyToMany(mappedBy = "patient")
     private Collection<Allergy> allergies;
 
-    @OneToMany(mappedBy = "patient")
     private Collection<Raport> raports;
-
 }

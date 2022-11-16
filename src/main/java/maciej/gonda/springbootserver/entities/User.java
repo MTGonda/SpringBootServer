@@ -1,8 +1,6 @@
 package maciej.gonda.springbootserver.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +14,17 @@ import lombok.Setter;
 public class User {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String login;
     private String password;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Role role;
 
+    @OneToOne(mappedBy = "user")
+    private Patient patient;
 
+    @OneToOne(mappedBy = "user")
+    private Doctor doctor;
 }
