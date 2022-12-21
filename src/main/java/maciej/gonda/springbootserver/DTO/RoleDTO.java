@@ -15,5 +15,4 @@ public class RoleDTO {
     private String name;
     private String description;
 
-    private Collection<User> user_id;
 }

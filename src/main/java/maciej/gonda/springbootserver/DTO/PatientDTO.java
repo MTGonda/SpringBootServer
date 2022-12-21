@@ -18,8 +18,8 @@ import java.util.Collection;
 public class PatientDTO {
     private String imie;
     private String nazwisko;
-    private int numertelefonu;
-    private int Pesel;
+    private String numertelefonu;
+    private String Pesel;
     private Date dataurodzenia;
 
 

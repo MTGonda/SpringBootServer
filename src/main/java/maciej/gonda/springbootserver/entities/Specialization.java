@@ -13,15 +13,14 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Allergy {
+public class Specialization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nazwa;
-    private String opis;
 
     @ManyToMany
-    private Collection<Patient> patient;
+    private Collection<Doctor> doctors;
 
 }

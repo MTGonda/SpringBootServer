@@ -17,11 +17,12 @@ import java.util.Collection;
 public class Patient {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String imie;
     private String nazwisko;
-    private int numertelefonu;
-    private int Pesel;
+    private String numertelefonu;
+    private String pesel;
     private Date dataurodzenia;
 
     @ManyToOne(optional = true)

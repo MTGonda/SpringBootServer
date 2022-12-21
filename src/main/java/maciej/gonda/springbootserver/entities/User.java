@@ -22,9 +22,4 @@ public class User {
     @ManyToOne
     private Role role;
 
-    @OneToOne(mappedBy = "user")
-    private Patient patient;
-
-    @OneToOne(mappedBy = "user")
-    private Doctor doctor;
 }

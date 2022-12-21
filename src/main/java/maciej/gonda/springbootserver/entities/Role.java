@@ -1,8 +1,6 @@
 package maciej.gonda.springbootserver.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +16,11 @@ import java.util.Collection;
 public class Role {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "role")
-    private Collection<User> user_id;
+
 
 }

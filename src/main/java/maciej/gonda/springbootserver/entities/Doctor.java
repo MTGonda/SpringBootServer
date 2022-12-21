@@ -17,10 +17,11 @@ import java.util.Collection;
 public class Doctor {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String imie;
     private String nazwisko;
-    private int numerTelefonu;
+    private String numerTelefonu;
 
     @OneToMany(mappedBy = "doctor")
     private Collection<Patient> patients;

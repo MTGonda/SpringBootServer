@@ -16,7 +16,7 @@ import java.util.Collection;
 public class DoctorDTO {
     private String imie;
     private String nazwisko;
-    private int numerTelefonu;
+    private String numerTelefonu;
 
 
     private Collection<Patient> patients;
