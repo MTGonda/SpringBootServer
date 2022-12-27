@@ -19,13 +19,13 @@ public class DoctorDTO {
     private String numerTelefonu;
 
 
-    private Collection<Patient> patients;
+    //private Collection<Patient> patients;
 
-    private Collection<Visit> visits;
+   // private Collection<Visit> visits;
 
-    private User user;
+   // private User user;
 
-    private Collection<Specialization> specializations;
+   private Collection<SpecializationDTO> specializations;
 
-    private Collection<Raport> raports;
+  //  private Collection<Raport> raports;
 }

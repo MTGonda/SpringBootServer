@@ -4,10 +4,7 @@ package maciej.gonda.springbootserver.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import maciej.gonda.springbootserver.DTO.DoctorDTO;
-import maciej.gonda.springbootserver.DTO.PatientDTO;
-import maciej.gonda.springbootserver.DTO.VisitCreationByPatinetDTO;
-import maciej.gonda.springbootserver.DTO.VisitDTO;
+import maciej.gonda.springbootserver.DTO.*;
 import maciej.gonda.springbootserver.entities.*;
 import maciej.gonda.springbootserver.repositories.DoctorRepo;
 import maciej.gonda.springbootserver.repositories.PatientRepo;
@@ -16,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +40,34 @@ public class VisitService {
         }
         return modelMapper.map(databaseResult.get(), VisitDTO.class);
     }
-    public VisitDTO createVisit(VisitCreationByPatinetDTO vcbd, PatientDTO patientDTO, DoctorDTO doctorDTO) {
-        if(patientRepo.findPatientByPesel(patientDTO.getPesel()).isEmpty()) {
-            //throw new Exception("Pacjent o peselu: " + patientDTO.getPesel() + "nie istnieje");
-        }
+//    public VisitDTO createVisit(VisitCreationByPatientDTO vcbd, PatientDTO patientDTO, DoctorDTO doctorDTO, SpecializationDTO specializationDTO) {
+//        Patient patient = patientRepo.findPatientByPesel(patientDTO.getPesel()).get();
+//
+//        if(patient==null){
+//           return null;}
+//
+//
+//
+//        Doctor doctor = doctorRepo.findByImieAndNazwiskoAndSpecializations(doctorDTO.getImie(),doctorDTO.getNazwisko(),).get();
+//        if(doctor == null){
+//        return null;}
+//
+//        Visit visitDoctorCheck = visitRepo.findByDatawizytyAndGodzinawizytyAndDoctor(vcbd.getDatawizyty(),vcbd.getGodzinawizyty(),doctor).get();
+//
+//        if (visitDoctorCheck == null) {
+//            return null;
+//        }
+//
+//        if(visitDoctorCheck.getPatient() !=null)
+//            return null;
+//        Visit visit1 = visitRepo.findByDatawizytyAndGodzinawizytyAndPatient(vcbd.getDatawizyty(),vcbd.getGodzinawizyty(),patient).get();
+//        if(visit1 !=null)
+//            return null;
+//        visitDoctorCheck.setPatient(patient);
+//        visitRepo.save(visitDoctorCheck);
+//
+//        return modelMapper.map(patient,VisitDTO.class);
 
-            Patient patient = patientRepo.findPatientByPesel(vcbd.getPatient().getPesel()).get();
 
 
       /*  if(doctorRepo.findByImieAndNazwiskoAndSpecializations(doctorDTO.getImie(),doctorDTO.getNazwisko(),doctorDTO.getSpecializations()).isEmpty()) {
@@ -70,9 +88,8 @@ public class VisitService {
 
             Visit visit1 = visitRepo.save(newVisit);
 */
-    return modelMapper.map(patient, VisitDTO.class);
 
-    }
+//    }
 
 
     }

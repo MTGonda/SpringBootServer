@@ -23,8 +23,5 @@ public class RaportController {
     public ResponseEntity<List<RaportDTO>> getAllRaports(){
         return ResponseEntity.ok().body(raportService.getAllDoctors());
     }
-    @GetMapping("/get/{id}")
-    public ResponseEntity<RaportDTO> getDoctorById(@PathVariable(value = "id")Long id){
-        return ResponseEntity.ok().body(raportService.findDoctorById(id));
-    }
+
 }

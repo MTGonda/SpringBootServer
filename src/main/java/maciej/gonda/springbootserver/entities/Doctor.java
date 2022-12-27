@@ -22,6 +22,11 @@ public class Doctor {
     private String imie;
     private String nazwisko;
     private String numerTelefonu;
+    private String adresGabinetu;
+    private String specjalizacja; //TODO nie jest z tej wersji (usunąć w razie problemów)
+
+
+
 
     @OneToMany(mappedBy = "doctor")
     private Collection<Patient> patients;
@@ -32,10 +37,13 @@ public class Doctor {
     @OneToOne(optional = false)
     private User user;
 
-    @ManyToMany(mappedBy = "doctors")
-    private Collection<Specialization> specializations;
+    @ManyToMany(mappedBy = "doctors", cascade = CascadeType.ALL)
+
+    private Collection<Specialization> specializations = new ArrayList<>();
 
     @OneToMany(mappedBy = "doctor")
     private Collection<Raport> raports;
+
+
 
 }

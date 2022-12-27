@@ -1,16 +1,13 @@
 package maciej.gonda.springbootserver.DTO;
 
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import maciej.gonda.springbootserver.entities.*;
+
 
 import java.sql.Date;
-import java.util.Collection;
+
 
 @Data
 @NoArgsConstructor
@@ -23,13 +20,13 @@ public class PatientDTO {
     private Date dataurodzenia;
 
 
-    private Doctor doctor;
+   // privat Doctor docteor;
 
-    private User user;
+    //private User user;
 
-    private Collection<Visit> visits;
+    //private Collection<Visit> visits;
 
-    private Collection<Allergy> allergies;
+    //private Collection<Allergy> allergies;
 
-    private Collection<Raport> raports;
+    //private Collection<Raport> raports;
 }

@@ -12,6 +12,6 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TypeOfVisitDTO {
-
+//TODO  do usunięcia (klasa nie jest potrzebna),( visual Paradigm Diagram klas)!!
     private Collection<Visit> visits;
 }

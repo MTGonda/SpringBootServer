@@ -20,7 +20,11 @@ public class Specialization {
     private Long id;
     private String nazwa;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "doctor_specializations",
+            joinColumns = @JoinColumn(name = "doctor_id"),
+    inverseJoinColumns = @JoinColumn(name = "specialization_id")
+    )
     private Collection<Doctor> doctors;
 
 }

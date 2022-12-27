@@ -9,8 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.sql.Array;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 @SpringBootApplication
@@ -26,7 +26,7 @@ public class SpringBootServerApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserRepo userRepo, RoleRepo roleRepo, DoctorRepo doctorRepo, PatientRepo patientRepo,
+    CommandLineRunner run(UserRepo userRepo, RoleRepo roleRepo, DoctorRepo doctorRepo, PatientRepo patientRepo, VisitRepo visitRepo,
                           SpecializationRepo specializationRepo, AllergyRepo allergyRepo, DoctorService doctorService){
         return args->{
 
@@ -45,8 +45,10 @@ public class SpringBootServerApplication {
             userRepo.save(userLekarzPawelJumper);
             userRepo.save(userPacjenEwaKowalska);
 
-            Doctor doctorOne = new Doctor(null, "Jan", "Kowalskil", "123123123", null, null, userLekarzJanKowalski,null , null);
-            Doctor doctorTwo = new Doctor(null, "Pawel", "Jumper", "321321321", null, null, userLekarzPawelJumper,null , null);
+
+            Doctor doctorOne = new Doctor(null, "Jan", "Kowalskil", "123123123","Kosciuszki 3/5","Alergolog", null, null, userLekarzJanKowalski,new ArrayList<>(), null);
+            Doctor doctorTwo = new Doctor(null, "Pawel", "Jumper", "321321321","Stalowa 8","Alergolog", null, null, userLekarzPawelJumper,null , null);
+
             doctorRepo.save(doctorOne);
             doctorRepo.save(doctorTwo);
 
@@ -56,6 +58,13 @@ public class SpringBootServerApplication {
 
             Patient patientOne = new Patient(null, "Ewa", "Kowalskap", "666555444","99070255331", new Date(1999,7,2), null, userPacjenEwaKowalska, null, null, null);
             patientRepo.save(patientOne);
+
+
+            Visit visit1 = new Visit(1L,new Date(2023,1,4),new Time(16,20, 0),new Time(17,20, 0),"Badanie na sierść","...", doctorOne,null,null,null);
+            Visit visit2 = new Visit(2L,new Date(2022,12,24),new Time(12, 0, 0),new Time(13, 0, 0),"Badanie ", "...",doctorTwo,null,null,null);
+
+            visitRepo.save(visit1);
+            visitRepo.save(visit2);
 
         };
     }

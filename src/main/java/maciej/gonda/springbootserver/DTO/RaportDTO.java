@@ -16,9 +16,9 @@ public class RaportDTO {
     private String tresc;
 
 
-    private Visit visit;
+  //  private Visit visit;
 
-    private Patient patient;
+  //  private Patient patient;
 
-    private Doctor doctor;
+   // private Doctor doctor;
 }

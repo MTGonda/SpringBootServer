@@ -11,7 +11,5 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecializationDTO {
-    private String specyfikacja;
-
-    private Collection<Doctor> doctors;
+    private String nazwa;
 }

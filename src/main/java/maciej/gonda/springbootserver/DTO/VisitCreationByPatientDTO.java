@@ -4,11 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.sql.Time;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdnotationDTO {
+public class VisitCreationByPatientDTO {
+    private Date datawizyty;
 
-    private String description;
+    private Time godzinawizyty;
 
+    private String rodzajwizyty;
 }

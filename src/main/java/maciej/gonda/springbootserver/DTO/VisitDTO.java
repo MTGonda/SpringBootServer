@@ -10,14 +10,16 @@ import maciej.gonda.springbootserver.entities.Patient;
 import maciej.gonda.springbootserver.entities.Raport;
 import maciej.gonda.springbootserver.entities.TypeOfVisit;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class VisitDTO {
 
-    private LocalDateTime datawizyty;
+    private Date datawizyty;
+    private Time godzinawizyty;
     private String rodzajwizyty;
     private String adresGabinetu;
     private int numerGabinetu;
@@ -25,12 +27,12 @@ public class VisitDTO {
 
     private String opis;
 
-    private Doctor doctor;
+   // private Doctor doctor;
 
-    private Raport raport;
+   // private Raport raport;
 
-    private Patient patient;
+   // private Patient patient;
 
-    private TypeOfVisit type;
+   // private TypeOfVisit type;
 
 }

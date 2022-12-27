@@ -27,24 +27,25 @@ import java.util.Optional;
 @Slf4j
 public class PatientService {
 
-@Autowired
+    @Autowired
     private ModelMapper modelMapper;
     private final PatientRepo patientRepo;
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
 
-    public List<PatientDTO> getAllPatients(){
-        return patientRepo.findAll().stream().map(patient -> modelMapper.map(patient,PatientDTO.class)).toList();
+    public List<PatientDTO> getAllPatients() {
+        return patientRepo.findAll().stream().map(patient -> modelMapper.map(patient, PatientDTO.class)).toList();
     }
 
-    public PatientDTO findPatientById(Long id){
-        Optional < Patient> databaseResult = patientRepo.findById(id);
-        if (databaseResult.isEmpty()){
+    public PatientDTO findPatientById(Long id) {
+        Optional<Patient> databaseResult = patientRepo.findById(id);
+        if (databaseResult.isEmpty()) {
             return null;
         }
-        return modelMapper.map(databaseResult.get(),PatientDTO.class);
+        return modelMapper.map(databaseResult.get(), PatientDTO.class);
     }
+
     public PatientDTO findPatientByPesel(String Pesel) {
         Optional<Patient> databaseResult = patientRepo.findPatientByPesel(Pesel);
         if (databaseResult.isEmpty()) {
@@ -56,19 +57,22 @@ public class PatientService {
     }
 
     public PatientDTO createPatientCard(PatientCreationDTO pcd) {
-        if(patientRepo.findPatientByPesel(pcd.getPesel()).isPresent()){
-            //throw new Exception("Pacjent z peselem " + pcd.getPesel() +" już istnieje"); //TODO
+        if (patientRepo.findPatientByPesel(pcd.getPesel()).isPresent()) {
+            return null;
         }
-        Role patientRole = roleRepo.findRoleByName("Pacjent").get();
-        User newUser = new User(null, pcd.getLogin(), pcd.getPassword(),patientRole);
-        User patientUser = userRepo.save(newUser);
+        {
 
-        Patient newPatient = new Patient(null, pcd.getImie(),pcd.getNazwisko(),pcd.getNumertelefonu(),pcd.getPesel(),
-                pcd.getDataurodzenia(),null,patientUser,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+            Role patientRole = roleRepo.findRoleByName("Pacjent").get();
+            User newUser = new User(null, pcd.getLogin(), pcd.getPassword(), patientRole);
+            User patientUser = userRepo.save(newUser);
 
-        Patient result = patientRepo.save(newPatient);
+            Patient newPatient = new Patient(null, pcd.getImie(), pcd.getNazwisko(), pcd.getNumertelefonu(), pcd.getPesel(),
+                    pcd.getDataurodzenia(), null, patientUser, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        return modelMapper.map(result, PatientDTO.class);
+            Patient result = patientRepo.save(newPatient);
+
+            return modelMapper.map(result, PatientDTO.class);
+        }
+
     }
-
 }
