@@ -17,6 +17,7 @@ public class DoctorDTO {
     private String imie;
     private String nazwisko;
     private String numerTelefonu;
+    private String specjalizacja;
 
 
     //private Collection<Patient> patients;
@@ -25,7 +26,7 @@ public class DoctorDTO {
 
    // private User user;
 
-   private Collection<SpecializationDTO> specializations;
+
 
   //  private Collection<Raport> raports;
 }

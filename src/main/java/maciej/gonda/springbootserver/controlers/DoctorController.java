@@ -2,7 +2,6 @@ package maciej.gonda.springbootserver.controlers;
 
 import lombok.RequiredArgsConstructor;
 import maciej.gonda.springbootserver.DTO.DoctorDTO;
-import maciej.gonda.springbootserver.entities.Specialization;
 import maciej.gonda.springbootserver.services.DoctorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,8 @@ public class DoctorController {
     return ResponseEntity.ok().body(doctorService.findDoctorById(id));
     }
     @GetMapping("/get/{imie}/{nazwisko}")
-    public ResponseEntity<DoctorDTO> findPatientByImieAndNazwisko(String imie, String nazwisko) {
-        return ResponseEntity.ok().body(doctorService.findPatientByImieAndNazwisko(imie,nazwisko));
+    public ResponseEntity<DoctorDTO> findPatientByImieAndNazwiskoAndSpecjalizacja(String imie, String nazwisko, String specjalizacja) {
+        return ResponseEntity.ok().body(doctorService.findPatientByImieAndNazwiskoAndSpecjalizacja(imie,nazwisko,specjalizacja));
     }
 
 

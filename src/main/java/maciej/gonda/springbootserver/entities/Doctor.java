@@ -34,12 +34,9 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor")
     private Collection<Visit> visits;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     private User user;
 
-    @ManyToMany(mappedBy = "doctors", cascade = CascadeType.ALL)
-
-    private Collection<Specialization> specializations = new ArrayList<>();
 
     @OneToMany(mappedBy = "doctor")
     private Collection<Raport> raports;

@@ -25,14 +25,14 @@ public class VisitController {
     public ResponseEntity<VisitDTO> getVisitById(@PathVariable(value = "id") Long id){
         return ResponseEntity.ok().body(visitService.findVisitbyID(id));
     }
-//    @PostMapping("/createVisit")
-//    public ResponseEntity<VisitDTO> createVisit(@RequestBody VisitCreationByPatientDTO visitCreationByPatientDTO, PatientDTO patientDTO, DoctorDTO doctorDTO)
-//    { VisitDTO response = visitService.createVisit(visitCreationByPatientDTO, patientDTO,
-//            doctorDTO);
-//        if (response!=null)
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        else
-//            return ResponseEntity.status(500).body(new VisitDTO());
-//    }
+    @PostMapping("/createVisit")
+    public ResponseEntity<VisitDTO> createVisit(@RequestBody VisitCreationByPatientDTO visitCreationByPatientDTO, PatientDTO patientDTO, DoctorDTO doctorDTO)
+    { VisitDTO response = visitService.createVisit(visitCreationByPatientDTO, patientDTO,
+            doctorDTO);
+        if (response!=null)
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        else
+            return ResponseEntity.status(500).body(new VisitDTO());
+    }
 
 }

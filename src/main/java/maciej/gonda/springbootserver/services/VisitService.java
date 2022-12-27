@@ -40,33 +40,33 @@ public class VisitService {
         }
         return modelMapper.map(databaseResult.get(), VisitDTO.class);
     }
-//    public VisitDTO createVisit(VisitCreationByPatientDTO vcbd, PatientDTO patientDTO, DoctorDTO doctorDTO, SpecializationDTO specializationDTO) {
-//        Patient patient = patientRepo.findPatientByPesel(patientDTO.getPesel()).get();
-//
-//        if(patient==null){
-//           return null;}
-//
-//
-//
-//        Doctor doctor = doctorRepo.findByImieAndNazwiskoAndSpecializations(doctorDTO.getImie(),doctorDTO.getNazwisko(),).get();
-//        if(doctor == null){
-//        return null;}
-//
-//        Visit visitDoctorCheck = visitRepo.findByDatawizytyAndGodzinawizytyAndDoctor(vcbd.getDatawizyty(),vcbd.getGodzinawizyty(),doctor).get();
-//
-//        if (visitDoctorCheck == null) {
-//            return null;
-//        }
-//
-//        if(visitDoctorCheck.getPatient() !=null)
-//            return null;
-//        Visit visit1 = visitRepo.findByDatawizytyAndGodzinawizytyAndPatient(vcbd.getDatawizyty(),vcbd.getGodzinawizyty(),patient).get();
-//        if(visit1 !=null)
-//            return null;
-//        visitDoctorCheck.setPatient(patient);
-//        visitRepo.save(visitDoctorCheck);
-//
-//        return modelMapper.map(patient,VisitDTO.class);
+    public VisitDTO createVisit(VisitCreationByPatientDTO vcbd, PatientDTO patientDTO, DoctorDTO doctorDTO) {
+        Patient patient = patientRepo.findPatientByPesel(patientDTO.getPesel()).get();
+
+        if(patient==null){
+           return null;}
+
+
+
+        Doctor doctor = doctorRepo.findByImieAndNazwiskoAndSpecjalizacja(doctorDTO.getImie(),doctorDTO.getNazwisko(),doctorDTO.getSpecjalizacja()).get();
+        if(doctor == null){
+        return null;}
+
+        Visit visitDoctorCheck = visitRepo.findByDatawizytyAndStartwizytyAndDoctor(vcbd.getDatawizyty(),vcbd.getGodzinawizyty(),doctor).get();
+
+        if (visitDoctorCheck == null) {
+            return null;
+        }
+
+        if(visitDoctorCheck.getPatient() !=null)
+            return null;
+        Visit visit1 = visitRepo.findByDatawizytyAndStartwizytyAndPatient(vcbd.getDatawizyty(),vcbd.getGodzinawizyty(),patient).get();
+        if(visit1 !=null)
+            return null;
+        visitDoctorCheck.setPatient(patient);
+        visitRepo.save(visitDoctorCheck);
+
+        return modelMapper.map(patient,VisitDTO.class);
 
 
 
@@ -89,7 +89,7 @@ public class VisitService {
             Visit visit1 = visitRepo.save(newVisit);
 */
 
-//    }
+  }
 
 
     }

@@ -27,11 +27,11 @@ public class SpringBootServerApplication {
 
     @Bean
     CommandLineRunner run(UserRepo userRepo, RoleRepo roleRepo, DoctorRepo doctorRepo, PatientRepo patientRepo, VisitRepo visitRepo,
-                          SpecializationRepo specializationRepo, AllergyRepo allergyRepo, DoctorService doctorService){
+                           AllergyRepo allergyRepo, DoctorService doctorService){
         return args->{
 
-            Specialization alergolog = new Specialization(null,"alergolog", null);
-            specializationRepo.save(alergolog);
+//            Specialization alergolog = new Specialization(null,"alergolog", null);
+//            specializationRepo.save(alergolog);
 
             Role rolaLekarz = new Role(null, "Lekarz","Rola przypisywana do lekarza");
             Role rolaPacjent = new Role(null, "Pacjent","Rola przypisywana do pacjenta");
@@ -46,8 +46,8 @@ public class SpringBootServerApplication {
             userRepo.save(userPacjenEwaKowalska);
 
 
-            Doctor doctorOne = new Doctor(null, "Jan", "Kowalskil", "123123123","Kosciuszki 3/5","Alergolog", null, null, userLekarzJanKowalski,new ArrayList<>(), null);
-            Doctor doctorTwo = new Doctor(null, "Pawel", "Jumper", "321321321","Stalowa 8","Alergolog", null, null, userLekarzPawelJumper,null , null);
+            Doctor doctorOne = new Doctor((Long) null, "Jan", "Kowalskil", "123123123","Kosciuszki 3/5", null, null, null,userLekarzJanKowalski, null);
+            Doctor doctorTwo = new Doctor(null, "Pawel", "Jumper", "321321321","Stalowa 8", null, null,null, userLekarzPawelJumper, null);
 
             doctorRepo.save(doctorOne);
             doctorRepo.save(doctorTwo);
@@ -65,6 +65,8 @@ public class SpringBootServerApplication {
 
             visitRepo.save(visit1);
             visitRepo.save(visit2);
+
+            
 
         };
     }
