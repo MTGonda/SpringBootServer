@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
@@ -23,12 +23,12 @@ public class Patient {
     private String nazwisko;
     private String numertelefonu;
     private String pesel;
-    private Date dataurodzenia;
+    private LocalDate dataurodzenia;
 
     @ManyToOne(optional = true)
     private Doctor doctor;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     private User user;
 
     @OneToMany(mappedBy = "patient")
@@ -40,4 +40,10 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private Collection<Raport> raports;
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "pesel='" + pesel + '\'' +
+                '}';
+    }
 }

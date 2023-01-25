@@ -32,7 +32,7 @@ public class PatientController {
     }
 
     @PostMapping("/create")
-        public ResponseEntity<PatientDTO> createPatientCard(@RequestBody PatientCreationDTO patientCreationDTO) throws Exception{
+        public ResponseEntity<PatientDTO> createPatientCard(@RequestBody PatientCreationDTO patientCreationDTO) {
         try {
             PatientDTO response = patientService.createPatientCard(patientCreationDTO);
             return new ResponseEntity<>(response, HttpStatus.OK);

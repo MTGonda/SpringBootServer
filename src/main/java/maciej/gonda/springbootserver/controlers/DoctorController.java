@@ -27,8 +27,8 @@ public class DoctorController {
     public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable(value = "id") Long id){
     return ResponseEntity.ok().body(doctorService.findDoctorById(id));
     }
-    @GetMapping("/get/{imie}/{nazwisko}")
-    public ResponseEntity<DoctorDTO> findPatientByImieAndNazwiskoAndSpecjalizacja(String imie, String nazwisko, String specjalizacja) {
+    @GetMapping("/get/{imie}/{nazwisko}/{specjalizacja}")
+    public ResponseEntity<DoctorDTO> findPatientByImieAndNazwiskoAndSpecjalizacja(@PathVariable String imie, @PathVariable String nazwisko,@PathVariable String specjalizacja) {
         return ResponseEntity.ok().body(doctorService.findPatientByImieAndNazwiskoAndSpecjalizacja(imie,nazwisko,specjalizacja));
     }
 

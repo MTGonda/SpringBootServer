@@ -23,6 +23,7 @@ public class Doctor {
     private String nazwisko;
     private String numerTelefonu;
     private String adresGabinetu;
+    private String numer;
     private String specjalizacja; //TODO nie jest z tej wersji (usunąć w razie problemów)
 
 
@@ -42,5 +43,13 @@ public class Doctor {
     private Collection<Raport> raports;
 
 
-
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "imie='" + imie + '\'' +
+                ", nazwisko='" + nazwisko + '\'' +
+                ",specjalizacja='" + specjalizacja + '\'' +
+                ", numer=" + numer +'\''+
+        '}';
+    }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 @Data
@@ -17,16 +18,8 @@ public class PatientDTO {
     private String nazwisko;
     private String numertelefonu;
     private String Pesel;
-    private Date dataurodzenia;
+    private LocalDate dataurodzenia;
 
 
-   // privat Doctor docteor;
 
-    //private User user;
-
-    //private Collection<Visit> visits;
-
-    //private Collection<Allergy> allergies;
-
-    //private Collection<Raport> raports;
 }

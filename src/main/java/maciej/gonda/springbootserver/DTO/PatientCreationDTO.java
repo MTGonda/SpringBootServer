@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 @Data
@@ -16,6 +17,6 @@ public class PatientCreationDTO {
     private String numertelefonu;
     private String pesel;
     private String login;
-    private Date dataurodzenia;
+    private LocalDate dataurodzenia;
     private String password;
 }

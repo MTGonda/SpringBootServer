@@ -27,4 +27,13 @@ public class Raport {
     @ManyToOne(optional = false)
     private Doctor doctor;
 
+    @Override
+    public String toString() {
+        return "Raport{" +
+                "tresc='" + tresc + '\'' +
+                ", visit=" + visit +
+                ", patient=" + patient +
+                ", doctor=" + doctor +
+                '}';
+    }
 }

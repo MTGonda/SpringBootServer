@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.sql.Date;
 import java.sql.Time;
 
+
 @Entity
 @Getter
 @Setter
@@ -37,4 +38,18 @@ public class Visit {
     @ManyToOne(optional = true)
     private TypeOfVisit type;
 
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "datawizyty=" + datawizyty +
+                ", startwizyty=" + startwizyty +
+                ", koniecwizyty=" + koniecwizyty +
+                ", rodzajwizyty='" + rodzajwizyty + '\'' +
+                ", opis='" + opis + '\'' +
+                ", doctor=" + doctor +
+                ", raport=" + raport +
+                ", patient=" + patient +
+                ", type=" + type +
+                '}';
+    }
 }
