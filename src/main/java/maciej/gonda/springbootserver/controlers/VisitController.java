@@ -27,20 +27,20 @@ public class VisitController {
     public ResponseEntity<VisitDTO> getVisitById(@PathVariable(value = "id") Long id){
         return ResponseEntity.ok().body(visitService.findVisitbyID(id));
     }
-    @PostMapping("/createVisit")
-    public ResponseEntity<VisitDTO> createVisit(@RequestBody VisitCreationByPatientDTO visitCreationByPatientDTO)
-    { String response = visitService.createVisitReservation(visitCreationByPatientDTO);
+    @PostMapping("/createVisitReservation")
+    public ResponseEntity<VisitDTO> createVisitReservation(@RequestBody VisitCreationByPatientDTO visitCreationByPatientDTO)
+    { //VisitDTO response = visitService.createVisitReservation(visitCreationByPatientDTO);
+        String response = visitService.createVisitReservation(visitCreationByPatientDTO);
         if (response!=null)
-            //return new ResponseEntity<>(response, HttpStatus.OK);
-        return new ResponseEntity<>(modelMapper.map(response,VisitDTO.class), HttpStatus.OK);
+            return new ResponseEntity<>(new VisitDTO(), HttpStatus.OK);
         else
             return ResponseEntity.status(500).body(new VisitDTO());
     }
     @PostMapping("/createRaport")
     public ResponseEntity<RaportDTO> createRaport(@RequestBody CreateRaportFromVisitDTO createRaportFromVisitDTO){
-        RaportDTO response = visitService.createRaport(createRaportFromVisitDTO);
+        String response = visitService.createRaport(createRaportFromVisitDTO);
         if(response != null)
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(modelMapper.map(response,RaportDTO.class), HttpStatus.OK);
         else
             return ResponseEntity.status(500).body(new RaportDTO());
     }

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
-
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -17,8 +17,6 @@ public class VisitCreationByPatientDTO {
     private Time koniecwizyty;
     private String rodzajwizyty;
     private String patientPESEL;
-    private String numerlekarza;
-    private String imieLekarza;
-    private String nazwiskoLekarza;
+    private String numerLekarza;
     private String specjalizacjaLekarza;
 }

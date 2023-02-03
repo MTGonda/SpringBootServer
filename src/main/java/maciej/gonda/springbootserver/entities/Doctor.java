@@ -43,7 +43,7 @@ public class Doctor {
     private Collection<Raport> raports;
 
 
-    @Override
+  /*  @Override
     public String toString() {
         return "Doctor{" +
                 "imie='" + imie + '\'' +
@@ -51,5 +51,22 @@ public class Doctor {
                 ",specjalizacja='" + specjalizacja + '\'' +
                 ", numer=" + numer +'\''+
         '}';
+    }*/
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", imie='" + imie + '\'' +
+                ", nazwisko='" + nazwisko + '\'' +
+                ", numerTelefonu='" + numerTelefonu + '\'' +
+                ", adresGabinetu='" + adresGabinetu + '\'' +
+                ", numer='" + numer + '\'' +
+                ", specjalizacja='" + specjalizacja + '\'' +
+             //   ", patients=" + patients +
+             //   ", visits=" + visits +
+             //   ", user=" + user +
+              //  ", raports=" + raports +
+                '}';
     }
 }

@@ -41,15 +41,15 @@ public class Visit {
     @Override
     public String toString() {
         return "Visit{" +
-                "datawizyty=" + datawizyty +
-                ", startwizyty=" + startwizyty +
-                ", koniecwizyty=" + koniecwizyty +
+                "datawizyty=" + datawizyty + '\''+
+                ", startwizyty=" + startwizyty + '\''+
+                ", koniecwizyty=" + koniecwizyty + '\''+
                 ", rodzajwizyty='" + rodzajwizyty + '\'' +
                 ", opis='" + opis + '\'' +
-                ", doctor=" + doctor +
-                ", raport=" + raport +
-                ", patient=" + patient +
-                ", type=" + type +
+               // ", doctor=" + doctor.toString() + '\''+
+             //   ", raport=" + raport.toString() + '\''+
+            //    ", patient=" + patient.toString() +'\''+
+            //    ", type=" + type + '\''+
                 '}';
     }
 }

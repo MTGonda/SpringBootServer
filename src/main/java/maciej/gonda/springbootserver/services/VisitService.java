@@ -1,6 +1,5 @@
 package maciej.gonda.springbootserver.services;
 
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import javax.print.Doc;
 import java.sql.Time;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +33,20 @@ public class VisitService {
     private final PatientRepo patientRepo;
     private final RaportRepo raportRepo;
 
-
+    //pomocniczy kod
     public List<VisitDTO> getAllVisit(){
-        return visitRepo.findAll().stream().map(visit -> modelMapper.map(visit, VisitDTO.class)).toList();
+        List<Visit> visits= visitRepo.findAll();
+        List<VisitDTO> visitsDTO=  Arrays.asList(modelMapper.map(visits, VisitDTO[].class));
+        int i=0;
+        for(Visit visit: visits)
+        {
+            if(visit.getPatient()!=null)
+                visitsDTO.get(i).setPeselPacjenta(visit.getPatient().getPesel());
+            visitsDTO.get(i).setNumerLekarza(visit.getDoctor().getNumer());
+            i++;
+        }
+        return visitsDTO;
     }
-
     public VisitDTO findVisitbyID(Long id){
         Optional< Visit> databaseResult = visitRepo.findById(id);
         if ((databaseResult.isEmpty())){
@@ -47,147 +54,139 @@ public class VisitService {
         }
         return modelMapper.map(databaseResult.get(), VisitDTO.class);
     }
-    /*
-       public String createVisitReservation(VisitCreationByPatientDTO vcbd) {
+    //koniec pomocniczego kodu
+    public String createVisitReservation(VisitCreationByPatientDTO vcbd) {
+        Patient patient = patientRepo.findPatientByPesel(vcbd.getPatientPESEL()).get();
+        if (patient == null)                                     return "Wynik - Brak pacjenta";
+        Time startNowejWizyty=vcbd.getGodzinawizyty();
+        Time koniecNowejWizyty=vcbd.getKoniecwizyty();
+        Collection<Visit> wizytyPacjenta=patient.getVisits();//lepsze rozwiązanie
+        System.out.println("  Wizyty pobrane od wyszukanego pacjenta: "+wizytyPacjenta.toString());
+        Collection<Visit> wizytyPacjenta1 = visitRepo.findAllByPatientAndDatawizyty(patient,vcbd.getDatawizyty());//niepotrzebna strata czasu
+        System.out.println("  Wizyty pacjenta wyszukane w bazie danych: "+wizytyPacjenta1.toString());
+        //przeglądanie wizyt pobranych od wyszukanego pacjenta
+        Visit patientReservedVisit=null;
+        for(Visit v: wizytyPacjenta){
+            Time startWizyty = v.getStartwizyty();
+            Time koniecWizyty = v.getKoniecwizyty();
+            //p1 <k   i    p1>=p  lub    k1>p   i   k1=<k - brak spełnienia tego warunki oznacza, że pacjent jest zajęty
+            if(!((koniecNowejWizyty.before(startWizyty))||(startNowejWizyty.after(koniecWizyty))))
+            {  patientReservedVisit=v;
+                break; }
+        }
+        if(patientReservedVisit!=null)                            return "Wynik - Pacjent jest zajety";
 
-           Patient patient = patientRepo.findPatientByPesel(vcbd.getPatientPESEL()).get();
-           if (patient == null) return "Wynik - Brak pacjenta";
-           Time startNowejWizyty=vcbd.getGodzinawizyty();
-           Time koniecNowejWizyty=vcbd.getKoniecwizyty();
-           Collection<Visit> wizytyPacjenta=patient.getVisits();//lepsze rozwiązanie
+        Visit doctorReservedVisit=null;
+        Doctor doctor = doctorRepo.findByNumerAndSpecjalizacja(vcbd.getNumerLekarza(), vcbd.getSpecjalizacjaLekarza()).get();
+        if (doctor == null)                                       return "Wynik - Brak lekarza";
+        Collection<Visit> wizytyLekarza = doctor.getVisits(); //lepsze rozwiązanie
+        System.out.println("  Wizyty pobrane od wyszukanego lekarza "+wizytyLekarza);
+        Collection<Visit> wizytyLekarza1 = visitRepo.findAllByDoctorAndDatawizyty(doctor, vcbd.getDatawizyty());//niepotrzebna strata czasu
+        System.out.println("  Wizyty lekarza pobrane z bazy danych"+wizytyLekarza1);
+        //przeglądanie wizyt pobranych od wyszukanego pacjenta
+        //czas rozpoczęcia wizyty i jej zakończenia musi być identyczny, jak terminy wizyt danego lekarza
+        for(Visit v: wizytyLekarza){
+            Time startWizyty = v.getStartwizyty();
+            Time koniecWizyty = v.getKoniecwizyty();
+            if((startNowejWizyty.equals(startWizyty) && koniecNowejWizyty.equals(koniecWizyty))){
+                doctorReservedVisit=v;
+                break; }
+        }
+        if(doctorReservedVisit==null)                             return "Wynik - Brak wizyty u lekarza ";
+        else
+        if (doctorReservedVisit.getPatient()!=null)           return "Wynik - Wizyta lekarza zajeta";
+        doctorReservedVisit.setPatient(patient);
+        Visit result = visitRepo.save(doctorReservedVisit);
+        return "Wynik - Wizyta zarezerwowana";
+    }
 
-           System.out.println(" Wizyty pobrane od wyszukanego pacjenta: "+wizytyPacjenta.toString());
-                   Collection<Visit> wizytyPacjenta1 = visitRepo.findAllByPatientAndDatawizyty(patient,
-                           vcbd.getDatawizyty());//niepotrzebna strata czasu
-
-           System.out.println(" Wizyty pacjenta wyszukane w bazie danych: "
-                   +wizytyPacjenta1.toString());
-   //przeglądanie wizyt pobranych od wyszukanego pacjenta
-
-           Visit patientReservedVisit=null;
-           for(Visit v: wizytyPacjenta){
-               Time startWizyty = v.getStartwizyty();
-               Time koniecWizyty = v.getKoniecwizyty();
-   //p1<k i p1>=p lub k1>p i k1=<k - brak spełnienia tego warunki oznacza, że pacjent jest zajęty
-               if(!((koniecNowejWizyty.before(startWizyty))||(startNowejWizyty.after(koniecWizyty))))
-               { patientReservedVisit=v;
-                   break; }
-           }
-           if(patientReservedVisit!=null) return "Wynik - Pacjent jest zajety";
-           Visit doctorReservedVisit=null;
-           Doctor doctor = doctorRepo.findByNumerAndSpecjalizacja(vcbd.getNumerlekarza(), vcbd.getSpecjalizacjaLekarza()).get();
-   
-           if (doctor == null) return "Wynik - Brak lekarza";
-           Collection<Visit> wizytyLekarza = doctor.getVisits(); //lepsze rozwiązanie
-
-           System.out.println(" Wizyty pobrane od wyszukanego lekarza "+wizytyLekarza);
-
-           Collection<Visit> wizytyLekarza1 = visitRepo.findAllByDoctorAndDatawizyty(doctor,
-                   vcbd.getDatawizyty());//niepotrzebna strata czasu
-
-           System.out.println(" Wizyty lekarza pobrane z bazy danych"+wizytyLekarza1);
-   //przeglądanie wizyt pobranych od wyszukanego pacjenta
-   //czas rozpoczęcia wizyty i jej zakończenia musi być taki sam, jak termin wizyty lekarza
-
-           for(Visit v: wizytyLekarza){
-               Time startWizyty = v.getStartwizyty();
-               Time koniecWizyty = v.getKoniecwizyty();
-               if((startNowejWizyty.equals(startWizyty) && koniecNowejWizyty.equals(koniecWizyty))){
-                   doctorReservedVisit=v;
-                   break; }
-           }
-           if(doctorReservedVisit==null) return "Wynik - Brak wizyty u lekarza ";
-           else
-           if (doctorReservedVisit.getPatient()!=null) return "Wynik - Wizyta lekarza zajeta";
-           doctorReservedVisit.setPatient(patient);
-           Visit result = visitRepo.save(doctorReservedVisit);
-           return modelMapper.map(result,VisitDTO.class).toString();
-       }
-
-
-
-
-
-       public VisitDTO visitReservation(VisitCreationByPatientDTO vcbd) {
-           Patient patient = patientRepo.findPatientByPesel(vcbd.getPatientPESEL()).get();
-           if (patient == null) {
-               return null;
-           }
-
-           Time startNowejWizyty=vcbd.getGodzinawizyty();
-           Time koniecNowejWizyty=vcbd.getKoniecwizyty();
-
-           Collection<Visit> wizytyPacjenta = visitRepo.findAllByPatientAndDatawizyty(patient,vcbd.getDatawizyty());
-           for(Visit v: wizytyPacjenta){
-               Time startWizyty = v.getStartwizyty();
-               Time koniecWizyty = v.getKoniecwizyty();
-               if(startWizyty.before(koniecNowejWizyty) && startNowejWizyty.before(koniecWizyty)){
-                   return null;
-               }
-               if(startNowejWizyty.after(koniecNowejWizyty)){
-                   return null;
-               }
-           }
-
-
-           Doctor doctor = doctorRepo.findByImieAndNazwiskoAndSpecjalizacja(vcbd.getImieLekarza(), vcbd.getNazwiskoLekarza(), vcbd.getSpecjalizacjaLekarza()).get();
-           if (doctor == null) {
-               return null;
-           }
-
-           Collection<Visit> wizytyLekarza = visitRepo.findAllByDoctorAndDatawizyty(doctor, vcbd.getDatawizyty());
-           for(Visit v: wizytyLekarza){
-               Time startWizyty = v.getStartwizyty();
-               Time koniecWizyty = v.getKoniecwizyty();
-               if(startWizyty.before(koniecNowejWizyty) && startNowejWizyty.before(koniecWizyty)){
-                   return null;
-               }
-               if(startNowejWizyty.after(koniecNowejWizyty)){
-                   return null;
-               }
-           }
-
-
-           Visit visit = new Visit(null, vcbd.getDatawizyty(), vcbd.getGodzinawizyty(), vcbd.getKoniecwizyty(), vcbd.getRodzajwizyty(), "...", doctor, null, patient, null);
-           Visit result = visitRepo.save(visit);
-           return modelMapper.map(result, VisitDTO.class);
-
-       }
-
-    public RaportDTO createRaport(CreateRaportFromVisitDTO createRaportFromVisitDTO){
-
-        Doctor doctor = doctorRepo.findByImieAndNazwiskoAndSpecjalizacja(createRaportFromVisitDTO.getImieLekarzaprowadzacego()
-                ,createRaportFromVisitDTO.getNazwiskoLekarzaprowadzacego()
-                , createRaportFromVisitDTO.getSpecjalizacjaLekarzaprowadzacego()).get();
-
-
-
-
-
-
-
-        Visit wizytyLekarza = visitRepo.findByDoctorAndDatawizyty(doctor,createRaportFromVisitDTO.getDataodbywanejwizyty()).get();
-        if(wizytyLekarza== null){
-            return null;
+    public String createRaport(CreateRaportFromVisitDTO createRaportFromVisitDTO){
+        if(createRaportFromVisitDTO.getVisitCreationByPatientDTO()==null) return "brak wizyty pacjenta";
+        Doctor doctor = doctorRepo.findByNumerAndSpecjalizacja(createRaportFromVisitDTO.getVisitCreationByPatientDTO().getNumerLekarza(),
+                createRaportFromVisitDTO.getVisitCreationByPatientDTO().getSpecjalizacjaLekarza()).get();
+        if(doctor==null) {
+            return "";
         }
 
-        Patient patient = patientRepo.findPatientByPesel(createRaportFromVisitDTO.getNumerpatientPESEL()).get();
+        Collection<Visit> doctorVisit = doctor.getVisits();
+        Time startodbywanejwizyty = createRaportFromVisitDTO.getVisitCreationByPatientDTO().getGodzinawizyty();
+        Time koniecodbywanejwizyty = createRaportFromVisitDTO.getVisitCreationByPatientDTO().getKoniecwizyty();
+
+        Visit doctorReservedVisit=null;
+        for(Visit visit: doctorVisit){
+            Time startwizyty = visit.getStartwizyty();
+            Time koniecwizyty = visit.getKoniecwizyty();
+            if((startodbywanejwizyty.equals(startwizyty) && koniecodbywanejwizyty.equals(koniecwizyty))){
+                doctorReservedVisit=visit;
+                break; }
+        }
+        if(doctorReservedVisit == null){
+            return "";
+        }
+Patient patient = doctorReservedVisit.getPatient();
         if(patient == null){
-            return null;
-
-        }
-        Visit wizytyPacjenta = visitRepo.findByPatientAndDatawizyty(patient,createRaportFromVisitDTO.getDataodbywanejwizyty()).get();
-
-        if(wizytyPacjenta== null){
-            return null;
+            return "Brak pacjenta" ; }
+        else {
+            if(!patient.getPesel().equals(createRaportFromVisitDTO.getVisitCreationByPatientDTO().getPatientPESEL())){
+                return "Nie ten pacjent";
+            }
         }
 
+        /*Patient patient = patientRepo.findPatientByPesel(createRaportFromVisitDTO.getVisitCreationByPatientDTO().getPatientPESEL()).get();
+        if(patient==null)
+            return "Brak pacjenta";*/
 
-        Raport raport = new Raport(null, createRaportFromVisitDTO.getTresc(), wizytyPacjenta,patient,doctor);
-        Raport result = raportRepo.save(raport);
-        return modelMapper.map(result,RaportDTO.class);
+
+    /*    Collection<Visit> patientVisit = patient.getVisits();
+        Time startwizytypacjenta = createRaportFromVisitDTO.getVisitCreationByPatientDTO().getGodzinawizyty();
+        Time koniecwizytypacjenta = createRaportFromVisitDTO.getVisitCreationByPatientDTO().getKoniecwizyty();
+
+        Visit patinetReservedVisit = null;
+        for (Visit visit: patientVisit ){
+            Time startwizyty = visit.getStartwizyty();
+            Time koniecwizyty = visit.getKoniecwizyty();
+            if((startwizytypacjenta.equals(startwizyty) && koniecwizytypacjenta.equals(koniecwizyty))){
+                patinetReservedVisit=visit;
+                break; }
+        }
+        if (patinetReservedVisit == null){
+            return "";
+        }*/
+
+        Raport raport = doctorReservedVisit.getRaport();
 
 
-    }*/
+        if(raport != null){
+            raport.setTresc(createRaportFromVisitDTO.getTresc());
+            Raport result1 = raportRepo.save(raport);
+            System.out.println("Uzupełnienie raportu: "+result1);
+            return result1.toString();
+        }
+        else
+        {
+            Raport raport1 = new Raport(null,createRaportFromVisitDTO.getTresc(),doctorReservedVisit,patient,doctor);
+            Raport result = raportRepo.save(raport1);
+            System.out.println("Tworzenie nowego raportu: "+result);
+            return result.toString();
+        }
+
+
+
+      // return  result.toString();
+
+    }
 }
 
+
+
+
+       /*     Visit wizytyLekarza = visitRepo.findByDoctorAndDatawizyty(doctor,createRaportFromVisitDTO.getVisitCreationByPatientDTO().getDatawizyty()).get();
+        if(wizytyLekarza== null){      return null;    }
+        Patient patient = patientRepo.findPatientByPesel(createRaportFromVisitDTO.getVisitCreationByPatientDTO().getPatientPESEL()).get();
+        if(patient == null){ return null;  }
+        Visit wizytyPacjenta = visitRepo.findByPatientAndDatawizyty(patient,createRaportFromVisitDTO.getVisitCreationByPatientDTO().getDatawizyty()).get();
+        if(wizytyPacjenta== null){ return null; }
+         */
+//     Raport raport = new Raport(null, createRaportFromVisitDTO.getTresc(), wizytyPacjenta,patient,doctor);
+
+//modelMapper.map(result,RaportDTO.class);

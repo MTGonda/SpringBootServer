@@ -20,6 +20,8 @@ public class VisitDTO {
     private String koniecWizyty;
     private String rodzajWizyty;
     private String opis;
+    private String PeselPacjenta;
+    private String NumerLekarza;
 
 
 

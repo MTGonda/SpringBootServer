@@ -40,10 +40,22 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private Collection<Raport> raports;
 
-    @Override
+   /* @Override
     public String toString() {
         return "Patient{" +
                 "pesel='" + pesel + '\'' +
+                '}';
+    }
+    */
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", imie='" + imie + '\'' +
+                ", nazwisko='" + nazwisko + '\'' +
+                ", numertelefonu='" + numertelefonu + '\'' +
+                ", pesel='" + pesel + '\'' +
                 '}';
     }
 }
