@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @RestController
@@ -28,21 +30,35 @@ public class VisitController {
         return ResponseEntity.ok().body(visitService.findVisitbyID(id));
     }
     @PostMapping("/createVisitReservation")
-    public ResponseEntity<VisitDTO> createVisitReservation(@RequestBody VisitCreationByPatientDTO visitCreationByPatientDTO)
+    public ResponseEntity<String> createVisitReservation(@RequestBody VisitCreationByPatientDTO visitCreationByPatientDTO)
     { //VisitDTO response = visitService.createVisitReservation(visitCreationByPatientDTO);
         String response = visitService.createVisitReservation(visitCreationByPatientDTO);
         if (response!=null)
-            return new ResponseEntity<>(new VisitDTO(), HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         else
-            return ResponseEntity.status(500).body(new VisitDTO());
+            return ResponseEntity.status(500).body("");
     }
     @PostMapping("/createRaport")
-    public ResponseEntity<RaportDTO> createRaport(@RequestBody CreateRaportFromVisitDTO createRaportFromVisitDTO){
+    public ResponseEntity<String> createRaport(@RequestBody CreateRaportFromVisitDTO createRaportFromVisitDTO){
         String response = visitService.createRaport(createRaportFromVisitDTO);
-        if(response != null)
-            return new ResponseEntity<>(modelMapper.map(response,RaportDTO.class), HttpStatus.OK);
+        if(response != null) {
+            System.out.println("RaportController");
+            return new ResponseEntity<String>(response, HttpStatus.OK);
+        }
         else
-            return ResponseEntity.status(500).body(new RaportDTO());
+            return ResponseEntity.status(500).body("");
+    }
+
+
+    // metoda testowa do sprawdzenia formatu danych
+    @GetMapping("/result")
+        public CreateRaportFromVisitDTO createRaportFromVisitDTOResponseEntity(){
+        String tr="mmmmmmmmmmm";
+        CreateRaportFromVisitDTO createRaportFromVisitDTO = new CreateRaportFromVisitDTO();
+        VisitCreationByPatientDTO visitCreationByPatientDTO = new VisitCreationByPatientDTO(new Date(1673478000000L),new Time(16,00,00),new Time(17,00,00),"Badanie","99040145523","1","Alergolog");
+        createRaportFromVisitDTO.setVisitCreationByPatientDTO(visitCreationByPatientDTO);
+        createRaportFromVisitDTO.setTresc(tr);
+        return createRaportFromVisitDTO;
     }
 
 }

@@ -41,9 +41,9 @@ public class Raport {
     public String toString() {
         return "Raport{" +
                 ", tresc='" + tresc + '\'' +
-                ", visit=" + visit +
-                ", patient=" + patient +
-                ", doctor=" + doctor +
+            //    ", visit=" + visit +
+              //  ", patient=" + patient +
+            //    ", doctor=" + doctor +
                 '}';
     }
 }
